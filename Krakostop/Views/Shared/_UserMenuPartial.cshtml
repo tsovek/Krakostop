@@ -1,0 +1,184 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Krakostop.Models
+@using Krakostop.Mails
+@using Krakostop.Controllers;
+@{
+    var personID1 = 0;
+    var personID2 = 0;
+    string[] names = new string[2];
+    int pairID = 0;
+    var joiner = new Pair_Joiner();
+    string imagePath = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        var userStore = new UserStore<KrakostopUser>(new KrakostopDbContext());
+        var manager = new UserManager<KrakostopUser>(userStore);
+        if (User.IsInRole("Pair") || User.IsInRole("Admin"))
+        {
+            var pairPeople = manager.FindByName(User.Identity.GetUserName())
+                        .Pair.Persons.ToList();
+            if (pairPeople.Count > 1)
+            {
+                names[0] = pairPeople[0].Name + " " + pairPeople[0].Surname;
+                names[1] = pairPeople[1].Name + " " + pairPeople[1].Surname;
+            }
+            pairID = manager.FindByName(User.Identity.GetUserName()).Pair.ID;
+
+            personID1 = pairPeople[0].ID;
+            personID2 = pairPeople[1].ID;
+
+        }
+        else
+        {
+            joiner = manager.FindByName(User.Identity.GetUserName()).Joiner;
+            names[0] = joiner.Name;
+        }
+    }
+
+    string fullPath = Request.MapPath("~/Images/" + User.Identity.GetUserName() + ".jpg");
+    if (System.IO.File.Exists(fullPath))
+    {
+        imagePath = "/Images/" + User.Identity.GetUserName() + ".jpg";
+    }
+    else
+    {
+        imagePath = "/Images/default.jpg";
+    }
+
+    var indexPairs = Html.IsSelected(action: "Index", controller: "Pairs");
+    var indexPeople = Html.IsSelected(action: "Index", controller: "People");
+    var indexPairJoiner = Html.IsSelected(action: "Index", controller: "PairJoiner");
+    var mailToMany = Html.IsSelected(action: "Mail", controller: "Home");
+    var stats = Html.IsSelected(action: "Account", controller: "Manager");
+    var adminExpand = (!string.IsNullOrEmpty(indexPairs) ||
+                      !string.IsNullOrEmpty(indexPeople) ||
+                      !string.IsNullOrEmpty(mailToMany)  ||
+                      !string.IsNullOrEmpty(stats) ||
+                      !string.IsNullOrEmpty(indexPairJoiner)) ? "active" : "";
+
+    var manage = Html.IsSelected(controller: "Account", action: "Manage");
+    var peson1act = Html.IsSelected(action: "Edit", controller: "People", id: personID1.ToString());
+    var person2act = Html.IsSelected(action: "Edit", controller: "People", id: personID2.ToString());
+
+    var joinerEdit = Html.IsSelected(action: "Edit", controller: "PairJoiner");
+
+    var infoManagement = (!string.IsNullOrEmpty(manage) ||
+                  !string.IsNullOrEmpty(peson1act) ||
+                  !string.IsNullOrEmpty(person2act) ||
+                  !string.IsNullOrEmpty(indexPairJoiner) ||
+                  !string.IsNullOrEmpty(joinerEdit)) ? "active" : "";
+
+    var rules = Html.IsSelected(action: "Rules", controller: "Home");
+    var krako = Html.IsSelected(action: "HowToKrako", controller: "Home");
+    var auto = Html.IsSelected(action: "HowToAuto", controller: "Home");
+
+    var books = (!string.IsNullOrEmpty(rules) ||
+              !string.IsNullOrEmpty(krako) ||
+              !string.IsNullOrEmpty(auto)) ? "active" : "";
+
+}
+<aside>
+    <div id="sidebar" class="nav-collapse ">
+        <ul class="sidebar-menu" id="nav-accordion">
+
+            <p class="centered">
+            <a href="@Url.Action("Manage", "Account")"><img src="@imagePath" class="img-circle" width="60" height="60"></a>
+            </p>
+            <h5 class="centered">
+                @if (User.IsInRole("Pair") || User.IsInRole("Admin"))
+                { 
+                    @names[0] <br /> 
+                    @names[1]
+                }
+                else
+                { 
+                    @names[0]
+                }
+            
+            </h5>
+            
+            <li class="mt">
+                <a class="@Html.IsSelected(action: "Index", controller: "Account")" href="@Url.Action("Index", "Account")">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Start</span>
+                </a>
+            </li>
+            
+            <li class="sub-menu">
+                <a class="@infoManagement" href="javascript:;">
+                    <i class="fa fa-desktop"></i>
+                    <span>Zarządzaj informacjami</span>
+                </a>
+                <ul class="sub">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Pair"))
+                    {
+                        <li class="@manage">@Html.ActionLink("Para " + @pairID, "Manage", "Account")</li>
+                        <li class="@peson1act">@Html.ActionLink(@names[0], "Edit", "People", new { id = @personID1 }, null)</li>
+                        <li class="@person2act">@Html.ActionLink(@names[1], "Edit", "People", new { id = @personID2 }, null)</li>
+                    }
+                    else if (User.IsInRole("Joiner"))
+                    {
+                        <li class="@manage">@Html.ActionLink("Użytkownik", "Manage", "Account")</li>
+                        <li class="@joinerEdit">@Html.ActionLink(@joiner.Name, "Edit", "PairJoiner", new { id = @joiner.ID }, null)</li>
+                                                <li class="@indexPairJoiner">@Html.ActionLink("Parozłączkowicze", "Index", "PairJoiner")</li>
+                    }
+                    
+                </ul>
+            </li>
+            @if (User.IsInRole("Admin") || User.IsInRole("Pair"))
+            {
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-cogs"></i>
+                        <span>Zarządzaj parą</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#">Przerzuć osobę</a></li>
+                        <li><a href="#">Zrezygnuj</a></li>
+                    </ul>
+                </li>
+            }
+
+            <li class="sub-menu">
+                <a class="@books" href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>Poradniki</span>
+                </a>
+                <ul class="sub">
+                    <li class="@rules">@Html.ActionLink("Regulamin", "Rules", "Home")</li>
+                    <li class="@auto">@Html.ActionLink("Jak autostopować?", "HowToAuto", "Home")</li>
+                    <li class="@krako">@Html.ActionLink("Jak krakostopować?", "HowToKrako", "Home")</li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class=" fa fa-bar-chart-o"></i>
+                    <span>Aplikacja mobilna</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="#">Informacje</a></li>
+                    <li><a href="#">Jak korzystać?</a></li>
+                    <li><a href="#">Historia podróży</a></li>
+                </ul>
+            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="sub-menu">
+                    <a class="@adminExpand" href="javascript:;">
+                        <i class=" fa fa-bar-chart-o"></i>
+                        <span>Admin</span>
+                    </a>
+                    <ul class="sub">
+                        <li class="@indexPairs")">@Html.ActionLink("Pary", "Index", "Pairs")</li>
+                        <li class="@indexPeople">@Html.ActionLink("Osoby", "Index", "People")</li>
+                        <li class="@indexPairJoiner">@Html.ActionLink("Parozłączkowicze", "Index", "PairJoiner")</li>
+                        <li class="@mailToMany">@Html.ActionLink("Wyslij do wielu", "Mail", "Home")</li>
+                        <li><a href="#">Posty uczestników</a></li>
+                        <li class="@stats">@Html.ActionLink("Statystyki", "Manager", "Account")</li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+</aside>

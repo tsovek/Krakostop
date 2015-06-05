@@ -1,0 +1,64 @@
+﻿@model Krakostop.Models.CreateJoinerViewModel
+
+@{
+    ViewBag.Title = "Dodaj parozłączkowicza";
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+}
+
+@using (Html.BeginForm("Create", "PairJoiner", FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    <div class="register-wrap">
+        <h4>@ViewBag.Title</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Password) })
+        </div>
+        <div class="form-group">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.ConfirmPassword) })
+        </div>
+
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Email) })
+        </div>
+        <hr />
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Joiner.Name, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Joiner.Name)})
+        </div>
+
+        <div class="form-group">
+            @Html.EnumDropDownListFor(model => model.Joiner.Sex, "Płeć", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Joiner.City, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Joiner.City)})
+        </div>
+
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Joiner.Age, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Joiner.Age)})
+        </div>
+
+        <div class="form-group">
+            @Html.TextAreaFor(model => model.Joiner.Description, new { @class = "form-control", style = "min-width: 450px; min-height: 120px;"})
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-theme btn-block btn-sm" type="submit">
+                <i class="fa fa-lock"></i>  Dodaj się
+            </button>
+        </div>
+
+        <div>
+            @Html.ActionLink("Wróć do listy", "Index")
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

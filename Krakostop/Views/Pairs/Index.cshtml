@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Krakostop.Models.Pair>
+
+@{
+    ViewBag.Title = "Pary zarejestrowane w bazie danych";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Stwórz nową parę", "Create")
+</p>
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="content-panel">
+            <h4><i class="fa fa-angle-right"></i> Lista par</h4>
+            <section id="unseen">
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="numeric">ID Pary</th>
+                            <th>Przypisany użytkownik</th>
+                            <th class="numeric">ID osoby 1</th>
+                            <th>Osoba 1</th>
+                            <th class="numeric">ID osoby 2</th>
+                            <th>Osoba 2</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var person1 = item.Persons.ElementAt(0);
+                            var person2 = item.Persons.ElementAt(1);
+                            <tr>
+                                <td class="numeric">@Html.DisplayFor(modelItem => item.ID)</td>
+                                <td>@Html.DisplayFor(modelItem => item.User.UserName)</td>
+                                <td>@Html.ActionLink(person1.ID.ToString(), "Edit", "People", new { id = person1.ID }, null)</td>
+                                <td>@person1.Name @person1.Surname</td>
+                                <td>@Html.ActionLink(person2.ID.ToString(), "Edit", "People", new { id = person2.ID }, null)</td>
+                                <td>@person2.Name @person2.Surname</td>
+                                <td>
+                                    @Html.ActionLink("Usuń", "Delete", new { id = item.ID })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">Płatność: </td>
+                                <td colspan="5">
+                                    @if (item.Payments)
+                                    {
+                                        <div class="alert alert-success"><b>Zapłacono!</b></div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-danger"><b>Nie zapłacono!</b></div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group center-block">
+                                        <button type="button" class="btn btn-theme03 text-center">Akcja</button>
+                                        <button type="button" class="btn btn-theme03 dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>@Html.ActionLink("Zapłacono", "Payments", "Pairs", new { id = item.ID, isConfirmed = true }, null)</li>
+                                            <li>@Html.ActionLink("Nie zapłacono", "Payments", "Pairs", new { id = item.ID, isConfirmed = false }, null)</li>
+                                        </ul>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </div><!-- /content-panel -->
+    </div><!-- /col-lg-4 -->
+</div><!-- /row -->

@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Krakostop.Models.Person>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2>Osoby</h2>
+
+<p>
+    @Html.ActionLink("Stwórz nową osobę", "Create")
+</p>
+
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="content-panel">
+            <h4><i class="fa fa-angle-right"></i> Lista użytkowników</h4>
+            <section id="unseen">
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="numeric">@Html.DisplayNameFor(model => model.ID)</th>
+                            <th class="numeric">Para</th>
+                            <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.Surname)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th class="numeric">@Html.DisplayNameFor(model => model.PESEL)</th>
+                            <th class="numeric">@Html.DisplayNameFor(model => model.Phone)</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="numeric">@Html.DisplayFor(modelItem => item.ID)</td>
+                            <td class="numeric">@item.Pair.ID.ToString()</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Surname)</td>
+                            <td> @Html.DisplayFor(modelItem => item.Email)</td>
+                            <td class="numeric">@Html.DisplayFor(modelItem => item.PESEL)</td>
+                            <td class="numeric">@Html.DisplayFor(modelItem => item.Phone)</td>
+                            <td>
+                                @Html.ActionLink("Edytuj", "Edit", new { id = item.ID }) |
+                                @Html.ActionLink("Usuń", "Delete", new { id = item.ID })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-right">Para: </td>
+                            <td colspan="2">
+                                @if (item.Pair.Payments)
+                                { 
+                                    <div class="alert alert-success"><b>Zapłacono!</b></div>
+                                }
+                                else
+                                { 
+                                    <div class="alert alert-danger"><b>Nie zapłacono!</b></div>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group center-block">
+                                    <button type="button" class="btn btn-theme03 text-center">Akcja</button>
+                                    <button type="button" class="btn btn-theme03 dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>@Html.ActionLink("Zapłacono", "Payments", "Pairs", new { id = item.Pair.ID, isConfirmed = true }, null)</li>
+                                        <li>@Html.ActionLink("Nie zapłacono", "Payments", "Pairs", new { id = item.Pair.ID, isConfirmed = false }, null)</li>
+                                    </ul>
+                                </div> 
+
+                            </td>
+                            <td colspan="1" class="text-right">Autokar:</td>
+                            <td colspan="1">
+                                @if (item.AutocarPayments && item.Autocar)
+                                {
+                                    <div class="alert alert-success"><b>Zapłacono!</b></div>
+                                }
+                                else if(!item.Autocar)
+                                {
+                                    <div class="alert alert-info"><b>Bez autokaru</b></div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-danger"><b>Nie zapłacono!</b></div>
+                                }  
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-theme03 text-center">Akcja</button>
+                                    <button type="button" class="btn btn-theme03 dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>@Html.ActionLink("Zapłacono", "Payments", new { id = item.ID, isConfirmed = true })</li>
+                                        <li>@Html.ActionLink("Niezapłacono", "Payments", new { id = item.ID, isConfirmed = false })</li>
+                                    </ul>
+                                </div> 
+
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </section>
+        </div><!-- /content-panel -->
+    </div><!-- /col-lg-4 -->
+</div><!-- /row -->

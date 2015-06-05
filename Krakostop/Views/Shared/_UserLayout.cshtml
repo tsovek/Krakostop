@@ -1,0 +1,146 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Krakostop.Models
+@using Krakostop.Models.dbModels
+@using Krakostop.Mails
+@using System.Collections.Generic;
+
+@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("~/Account/Login");
+}
+
+@{
+    var notifs = new List<Notifications>();
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var userStore = new UserStore<KrakostopUser>(new KrakostopDbContext());
+        var manager = new UserManager<KrakostopUser>(userStore);
+        notifs = manager.FindByName(User.Identity.Name).Notifs.ToList();
+        if (notifs.Count > 0)
+        {
+            notifs = manager.FindByName(User.Identity.GetUserName())
+                .Notifs.OrderByDescending(e => e.Time).ToList();   
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Krakostop - panel</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+
+    <section id="container">
+        <header class="header black-bg">
+            <div class="sidebar-toggle-box">
+                <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+            </div>
+            <div class="nav notify-row" id="top_menu">
+                <a class="logo" href=@Url.Action("Index", "Home")><img src="~/Images/logo.png" /></a>
+            </div>
+            <div class="top-menu">
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
+                    {
+                    @Html.AntiForgeryToken()
+                    <ul class="nav pull-right top-menu">
+                        <li>
+                            <a class="logout" href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a>
+                        </li>
+                    </ul>
+                    }
+            </div>
+        </header>
+
+        @Html.Partial("~/Views/Shared/_UserMenuPartial.cshtml")
+
+        <section id="main-content">
+            <section class="wrapper">
+
+                <div class="row">
+                    <div class="col-lg-9 main-chart">
+                        @RenderBody()
+                    </div>
+                    <div class="col-lg-3 ds">
+
+                        <h3>POWIADOMIENIA</h3>
+                        @foreach (var item in notifs)
+                        { 
+                        <div class="desc">
+                            <div class="thumb">
+                                <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                            <div class="details">
+                                <p>
+                                    <muted>@item.Time</muted><br />
+                                    <a href="#">@item.NotifType.Description() @item.User</a> @item.Desc<br />
+                                </p>
+                            </div>
+                        </div>
+                        }
+
+                    </div>
+                </div>
+            </section>
+        </section>
+
+    <footer class="site-footer">
+        <div class="text-center">
+            @DateTime.Now.Year - Krakostop
+            <a href="index.html#" class="go-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+    </footer>
+</section>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+<script type="application/javascript">
+    $(document).ready(function () {
+        $("#date-popover").popover({html: true, trigger: "manual"});
+        $("#date-popover").hide();
+        $("#date-popover").click(function (e) {
+            $(this).hide();
+        });
+
+        $("#my-calendar").zabuto_calendar({
+            action: function () {
+                return myDateFunction(this.id, false);
+            },
+            action_nav: function () {
+                return myNavFunction(this.id);
+            },
+            ajax: {
+                url: "show_data.php?action=1",
+                modal: true
+            },
+            legend: [
+                {type: "text", label: "Special event", badge: "00"},
+                {type: "block", label: "Regular event", }
+            ]
+        });
+    });
+
+
+    function myNavFunction(id) {
+        $("#date-popover").hide();
+        var nav = $("#" + id).data("navigation");
+        var to = $("#" + id).data("to");
+        console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+    }
+</script>
+
+</body>
+</html>

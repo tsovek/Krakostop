@@ -1,0 +1,50 @@
+﻿@model Krakostop.Models.Mail
+
+@{
+    ViewBag.Title = "Wyślij mail do parozłączkowicza";
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+}
+
+@using (Html.BeginForm("Mail", "PairJoiner", FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    <div class="register-wrap">
+        <h4>Skontaktuj się z użytkownikiem @ViewBag.Name</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.To, new { @Value = ViewBag.Email })
+
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Name) })
+            </div>
+
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.From, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.From) })
+            </div>
+
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Title)})
+        </div>
+
+        <div class="form-group">
+            @Html.TextAreaFor(model => model.Body, new { @class = "form-control", style = "min-width: 450px; min-height: 120px;"})
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-theme btn-block btn-sm" type="submit">
+                <i class="fa fa-lock"></i>  Wyślij
+            </button>
+        </div>
+
+        <div>
+            @Html.ActionLink("Wróć do listy", "Index")
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

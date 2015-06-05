@@ -1,0 +1,46 @@
+﻿@model Krakostop.Models.MailToMany
+
+@{
+    ViewBag.Title = "Wyślij mail do wielu";
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+}
+
+@using (Html.BeginForm("MailToMany", "Home", FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    <div class="register-wrap">
+        <h4>Wyślij do wielu</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.ValidationMessageFor(m => m.KindOfEmail)
+            @Html.EnumDropDownListFor(model => model.KindOfEmail, "Komu wysłać?", new { @class = "form-control" })
+
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Title)})
+        </div>
+
+        <div class="form-group">
+            @Html.TextAreaFor(model => model.Body, new { @class = "form-control", style = "min-width: 450px; min-height: 120px;"})
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-theme btn-block btn-sm" type="submit">
+                <i class="fa fa-lock"></i>  Wyślij
+            </button>
+        </div>
+
+        <div>
+            @Html.ActionLink("Wróć", "Index")
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

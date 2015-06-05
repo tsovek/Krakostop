@@ -1,0 +1,173 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Krakostop.Models
+@using System.Collections.Generic;
+@using System.Data;
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@{
+
+    int people_count = 0;
+    int joiner_count = 0;
+    bool payments = false;
+    int pairID = 0;
+    var pairPeople = new List<Person>();
+    string style = "";
+    
+    if (User.Identity.IsAuthenticated)
+    {
+        var db = new KrakostopDbContext();
+        people_count = db.Pairs.Count();
+        joiner_count = db.Pair_Joiners.Count();
+        if (User.IsInRole("Admin") || User.IsInRole("Pair"))
+        {
+            var userStore = new UserStore<KrakostopUser>(db);
+            var manager = new UserManager<KrakostopUser>(userStore);
+            payments = manager.FindByName(User.Identity.GetUserName())
+                              .Pair.Payments;
+            pairID = manager.FindByName(User.Identity.GetUserName()).Pair.ID;
+            style = payments ? "alert-success" : "alert-danger";
+            pairPeople = manager.FindByName(User.Identity.GetUserName())
+                            .Pair.Persons.ToList();   
+        }
+    }
+
+    int number_of_likes = 0;
+    int talking_about = 0;
+    object value = "";
+    string url = "https://graph.facebook.com/krakostop";
+    try
+    {
+        string jsonString = new System.Net.WebClient().DownloadString(url);
+        System.Web.Script.Serialization.JavaScriptSerializer obj1 = new System.Web.Script.Serialization.JavaScriptSerializer();
+        Dictionary<string, object> objDic = (Dictionary<string, object>)obj1.Deserialize<object>(jsonString);
+        bool success = false;
+        success = objDic.TryGetValue("likes", out value);
+        if (success)
+        {
+            number_of_likes = (int)value;
+            talking_about = (int) objDic["talking_about_count"];
+        }
+    }
+    catch
+    {
+
+    }
+}
+<div class="showback">
+    <div class="alert @style centered">
+        @if (User.IsInRole("Admin") || User.IsInRole("Pair"))
+        {
+            if (payments)
+            {
+                <b>Uregulowałeś opłaty!</b>
+            }
+            else
+            {
+                <b>Uwaga! Aby dokończyć proces rejestracyjny, musisz dokonać przelewu na kwotę 70zł.</b>
+                <br /><br />
+                <i>
+                    Dawid Kmieć<br>
+                    71 1600 1013 1844 0174 4000 0001<br />
+                    ul. Kaczkowskiego 3/3, 33-100 Tarnów<br />
+                    Tytuł przelewu: <b>Krakostop, Para nr @pairID.ToString(), @pairPeople[0].Name @pairPeople[0].Surname, @pairPeople[1].Name @pairPeople[1].Surname</b>
+                </i>
+            }
+        }
+    </div>
+    @foreach (var p in pairPeople.Where(p => p.Autocar))
+    {
+        <div class="alert alert-warning centered">
+            Zgłosiłeś użytkownika <b>@p.Name @p.Surname</b> do powrotu autokarem. Więcej informacji wkrótce!
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-lg-12 main-chart">
+        <div class="row mtbox">
+            <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
+                <div class="box1">
+                    <span class="li_like"></span>
+                    <h3>@number_of_likes</h3>
+                </div>
+                <p>@number_of_likes Ludzi polubiło nasz profil na facebooku!</p>
+            </div>
+            <div class="col-md-2 col-sm-2 box0">
+                <div class="box1">
+                    <span class="li_display"></span>
+                    <h3>@talking_about</h3>
+                </div>
+                <p>@talking_about Osób mówi o krakostopie.</p>
+            </div>
+            <div class="col-md-2 col-sm-2 box0">
+                <div class="box1">
+                    <span class="li_user"></span>
+                    <h3>@people_count</h3>
+                </div>
+                <p>Mamy @people_count zarejestrowanych par!</p>
+            </div>
+            <div class="col-md-2 col-sm-2 box0">
+                <div class="box1">
+                    <span class="li_search"></span>
+                    <h3>@joiner_count</h3>
+                </div>
+                <p>Mamy już @joiner_count zarejestrowanych <b>parozłączkowiczów</b></p>
+            </div>
+            <div class="col-md-2 col-sm-2 box0">
+                <div class="box1">
+                    <span class="li_banknote"></span>
+                        @if (payments)
+                        {
+                            <h3>OK!</h3>       
+                        }
+                        else
+                        {
+                            <h3>NOT!</h3>
+                        }
+                </div>
+                <p>Status Waszej wpłaty.</p>
+            </div>
+
+        </div><!-- /row mt -->
+
+        <div class="row">
+
+            <div class="col-md-4 mb">
+                <!-- INSTAGRAM PANEL -->
+                <div class="instagram-panel pn">
+                    <i class="fa fa-instagram fa-4x"></i>
+                    <p><br />
+                        Krakostop<br />
+                        obserwuj nas na Instagramie!
+                    </p>
+                </div>
+            </div><!-- /col-md-4 -->
+
+            <div class="col-md-4 mb">
+                <!-- INSTAGRAM PANEL -->
+                <div class="twitter-panel pn">
+                    <i class="fa fa-facebook fa-4x"></i>
+                    <p>
+                        Krakostop<br />
+                        polub nasz profil!
+                    </p>
+                    <p><i class="fa fa-comment"></i> @talking_about | <i class="fa fa-heart"></i> @number_of_likes</p>
+                </div>
+            </div><!-- /col-md-4 -->
+
+            <div class="col-md-4 mb">
+                <!-- INSTAGRAM PANEL -->
+                <div class="grey-panel pn">
+                    <br /><br />
+                    <i class="fa fa-youtube fa-4x"></i>
+                    <p><br />
+                        Krakostop<br />
+                        subskrybuj nasz kanał!
+                </p>
+            </div>
+        </div><!-- /col-md-4 -->
+
+    </div><!-- /row -->
+        </div></div>

@@ -1,0 +1,23 @@
+﻿@using Krakostop.Models
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@if (!Request.IsAuthenticated)
+{
+    DateTime d1 = new DateTime(2015, 03, 23);
+    if (d1 > DateTime.Now)
+    {
+        Response.Redirect("~/cur");   
+    }
+    else
+    { 
+        @Html.Partial("~/Views/Account/Login.cshtml")
+    }
+}
+else
+{
+    Response.Redirect("~/Account");
+}

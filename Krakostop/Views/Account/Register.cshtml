@@ -1,0 +1,179 @@
+﻿@model Krakostop.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Rejestracja";
+    bool limitCount = ViewBag.CountLimit > 200;
+}
+
+@using (Html.BeginForm("Register", "Account",
+    new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,
+    new { @class = "form-register"}))
+{
+@Html.AntiForgeryToken()
+<div class="login-wrap">
+    <h4>@ViewBag.Title</h4>
+    <h5>Informacje wspólne dla pary:</h5>
+    @if (true)
+    { 
+        <h3 class="text-danger">Limit wyczerpany.</h3>
+        <h5 class="text-danger">Obserwuj nasz profil na facebooku, aby dowiedzieć się o miejscach rezerwowych</h5>
+    }
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <hr />
+        <div class="form-group">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Password) })
+        </div>
+        <div class="form-group">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.ConfirmPassword) })
+        </div>
+        <hr />
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Osoba 1 (rejestrująca, lider pary)
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.Email, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.Email) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.Name, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.Name) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.Surname, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.Surname) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.Adress, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.Adress) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.City, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.City) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.CardID, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.CardID) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.Phone, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.Phone) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.PESEL, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.PESEL) })
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Person2.Size)
+                        @Html.EnumDropDownListFor(model => model.Person1.Size, "Rozmiar koszulki", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.ClosedPersonName, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.ClosedPersonName) })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person1.ClosedPersonPhone, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person1.ClosedPersonPhone) })
+                    </div>
+                    <div class="form-group checkbox">
+                        @Html.CheckBoxFor(m => m.Person1.Insurance, new { @class = "col-md-2 btn-large" })
+                        @Html.LabelFor(m => m.Person1.Insurance, new { @class = "col-md-10 label-control" })
+                    </div>
+                    <div class="form-group checkbox">
+                        @Html.CheckBoxFor(m => m.Person1.Autocar, new { @class = "col-md-2 btn-large" })
+                        @Html.LabelFor(m => m.Person1.Autocar, new { @class = "col-md-10 label-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Osoba 2
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.Email, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.Email) })
+
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.Name, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.Name) })
+
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.Surname, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.Surname) })
+
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.Adress, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.Adress) })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person2.City, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.City) })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Person2.CardID, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.CardID) })
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.Phone, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.Phone) })
+
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.PESEL, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.PESEL) })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Person2.Size)
+                        @Html.EnumDropDownListFor(model => model.Person2.Size, "Rozmiar koszulki", new { @class = "form-control" })
+
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.ClosedPersonName, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.ClosedPersonName) })
+
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Person2.ClosedPersonPhone, new { @class = "form-control", @placeholder = @Html.DisplayNameFor(m => m.Person2.ClosedPersonPhone) })
+
+                    </div>
+                    <div class="form-group checkbox">
+                        @Html.CheckBoxFor(m => m.Person2.Insurance, new { @class = "col-md-2 btn-large" })
+                        @Html.LabelFor(m => m.Person2.Insurance, new { @class = "col-md-10 label-control" })
+                    </div>
+                    <div class="form-group checkbox">
+                        @Html.CheckBoxFor(m => m.Person2.Autocar, new { @class = "col-md-2 btn-large" })
+                        @Html.LabelFor(m => m.Person2.Autocar, new { @class = "col-md-10 label-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group checkbox">
+            @Html.CheckBoxFor(m => m.TermsAndRules)
+            @Html.LabelFor(m => m.TermsAndRules)
+        </div>
+    </div>
+    @if (true)
+    {
+        <button class="btn btn-danger btn-block btn-sm" type="button">
+            <i class="fa fa-lock"></i>  Zablokowano
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-theme btn-block btn-sm" type="submit">
+            <i class="fa fa-lock"></i>  Zarejestrujcie się
+        </button>
+    }
+
+</div>
+}

@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Krakostop.Models.Pair>
+
+@{
+    Layout = "~/Views/Shared/_PrintPage.cshtml";
+}
+
+    <div>
+    @foreach (var item in Model)
+    {
+        var person1 = item.Persons.ElementAt(0);
+        var person2 = item.Persons.ElementAt(1);
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th width="20%">Para @item.ID @Html.ActionLink(".", "Print", "Home")</th>
+                    <th width="40%">Osoba @person1.ID</th>
+                    <th width="40%">Osoba @person2.ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Imię i nazwisko</td>
+                    <td>@person1.Name @person1.Surname</td>
+                    <td>@person2.Name @person2.Surname</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>@person1.Email</td>
+                    <td>@person2.Email</td>
+                </tr>
+                <tr>
+                    <td>Adres</td>
+                    <td>@person1.Adress</td>
+                    <td>@person2.Adress</td>
+                </tr>
+                <tr>
+                    <td>Miasto</td>
+                    <td>@person1.City</td>
+                    <td>@person2.City</td>
+                </tr>
+                <tr>
+                    <td>PESEL</td>
+                    <td>@person1.PESEL</td>
+                    <td>@person2.PESEL</td>
+                </tr>
+                <tr>
+                    <td>Tel.</td>
+                    <td>@person1.Phone</td>
+                    <td>@person2.Phone</td>
+                </tr>
+                <tr>
+                    <td>Nr dowodu</td>
+                    <td>@person1.CardID</td>
+                    <td>@person2.CardID</td>
+                </tr>
+                <tr>
+                    <td>Rozmiar koszulki</td>
+                    <td>@person1.Size</td>
+                    <td>@person2.Size</td>
+                </tr>
+                <tr>
+                    <td>Osoba bliska</td>
+                    <td>@person1.ClosedPersonName</td>
+                    <td>@person2.ClosedPersonName</td>
+                </tr>
+                <tr>
+                    <td>Tel. bliskiej</td>
+                    <td>@person1.ClosedPersonPhone</td>
+                    <td>@person2.ClosedPersonPhone</td>
+                </tr>
+                <tr>
+                    <td>Autokar</td>
+                    @if (!person1.Autocar)
+                    { 
+                        <td class="alert alert-info"><b>Bez autokaru</b></td>
+                    }
+                    else
+                    {
+                        if (person1.AutocarPayments)
+                        { 
+                            <td class="alert alert-success"><b>Zapłacono</b></td>
+                        }
+                        else
+                        { 
+                            <td class="alert alert-danger"><b>Nie zapłacono</b></td>
+                        }
+                    }
+                    @if (!person2.Autocar)
+                    {
+                        <td class="alert alert-info"><b>Bez autokaru</b></td>
+                    }
+                    else
+                    {
+                        if (person2.AutocarPayments)
+                        {
+                            <td class="alert alert-success"><b>Zapłacono</b></td>
+                        }
+                        else
+                        {
+                            <td class="alert alert-danger"><b>Nie zapłacono</b></td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    <td><b>PODPIS</b></td>
+                    <td height="50px"></td>
+                    <td height="50px"></td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</div>
+

@@ -1,0 +1,125 @@
+﻿@{
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";   
+    }
+}
+
+<div class="login-wrap">
+    <h3>Jak krakostopować?</h3>
+    <br />
+    Zacznijmy od początku… krakostopowanie to krakowska odmiana autostopowania, więc wszystkie zasady związane z autostopowaniem (które można odnaleźć w zakładce „Jak autostopowa?”) możemy odnaleźć także w krakostopowaniu, jednak ta odmiana jest wzbogacone o pewne dodatki. Wyobraź sobie piękny, słoneczny dzień z samego rana, w tle widoczny Olimp, Akropol, Babilon i Kapitol, prawie jak w Grecji! Lecz nie to jest najważniejsze, najważniejsi są ludzie! Ze wszystkich stron otaczają Cię ludzie, którzy tak, jak Ty przybyli tu ze względu na swoją podróżniczą pasję połączoną z dozą szaleństwa, ewentualnie odrobiną chęci rywalizacji. Już w tym miejscu zaczyna się Wielka Integracja, ale to dopiero początek. W jednym czasie wszyscy ruszają ku upragnionej mecie, oddalonej o setki kilometrów. W drodze do miejsca przeznaczenia Krakostopowiczów napotykać będziesz wszędzie ślady ich bytowania albo ich samych, więc nie ma szans byś poczuł się samotnie! Gdy osiągniesz cel tej niesamowitej podróży zacznie się rozwinięcie Wielkiej Integracji. Skosztujesz lokalnych przysmaków, wymienisz się swoimi opowieściami z trasy, poznasz nowe miejsce i nowych ludzi… Ciąg dalszy należy tylko do Ciebie!
+    <br /><br />
+    Czy chcesz krakostopować? Głupie pytanie, oczywiście, że chcesz!<br />
+    Oto co musisz zrobić:<br />
+    1. Zapisać się na Krakostop, ale to już za pewne masz za sobą<br />
+    2. Wyćwiczyć najlepszy uśmiech<br />
+    3. Zapakować plecak<br />
+    4. Naładować się pozytywną energią<br />
+    5. Dobrze się bawić<br />
+    6. Kontynuować dobrą zabawę!<br />
+    <br />
+</div>
+
+<div class="row mt">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+        <div class="project-wrapper">
+            <div class="project">
+                <div class="photo-wrapper">
+                    <div class="photo">
+                        <a class="fancybox" href="~/Images/2014/1.jpg"><img class="img-responsive" src="~/Images/2014/1.jpg" alt=""></a>
+                    </div>
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- col-lg-4 -->
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+        <div class="project-wrapper">
+            <div class="project">
+                <div class="photo-wrapper">
+                    <div class="photo">
+                        <a class="fancybox" href="~/Images/2014/5.jpg"><img class="img-responsive" src="~/Images/2014/5.jpg" alt=""></a>
+                    </div>
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- col-lg-4 -->
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+        <div class="project-wrapper">
+            <div class="project">
+                <div class="photo-wrapper">
+                    <div class="photo">
+                        <a class="fancybox" href="~/Images/2014/6.jpg"><img class="img-responsive" src="~/Images/2014/6.jpg" alt=""></a>
+                    </div>
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- col-lg-4 -->
+</div><!-- /row -->
+<div class="row mt">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+        <div class="project-wrapper">
+            <div class="project">
+                <div class="photo-wrapper">
+                    <div class="photo">
+                        <a class="fancybox" href="~/Images/2014/4.jpg"><img class="img-responsive" src="~/Images/2014/4.jpg" alt=""></a>
+                    </div>
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- col-lg-4 -->
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+        <div class="project-wrapper">
+            <div class="project">
+                <div class="photo-wrapper">
+                    <div class="photo">
+                        <a class="fancybox" href="~/Images/2014/2.jpg"><img class="img-responsive" src="~/Images/2014/2.jpg" alt=""></a>
+                    </div>
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- col-lg-4 -->
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc">
+        <div class="project-wrapper">
+            <div class="project">
+                <div class="photo-wrapper">
+                    <div class="photo">
+                        <a class="fancybox" href="~/Images/2014/3.jpg"><img class="img-responsive" src="~/Images/2014/3.jpg" alt=""></a>
+                    </div>
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- col-lg-4 -->
+</div><!-- /row -->
+
+<script type="text/javascript">
+    $(function () {
+        //    fancybox
+        jQuery(".fancybox").fancybox();
+    });
+
+</script>
+
+<script>
+    //custom select box
+
+    $(function () {
+        $("select.styled").customSelect();
+    });
+
+</script>
+
+
+
+
+

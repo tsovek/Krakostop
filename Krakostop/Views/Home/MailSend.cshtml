@@ -1,0 +1,15 @@
+﻿@{
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";   
+    }
+}
+
+<div class="register-wrap">
+    Emaile wysłane. :)<br /><br />
+
+    @Html.ActionLink("Wróć.", "Index")
+</div>
+
+
+

@@ -1,0 +1,144 @@
+﻿@model Krakostop.Models.Person
+
+@{
+    ViewBag.Title = "Płatności";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h3>@ViewBag.Title</h3>
+
+<h5>Jesteś pewien, że chcesz zatwierdzić płatnośc za autokar dla tego użytkownika?</h5>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Pair.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pair.ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Surname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Surname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PESEL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PESEL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CardID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CardID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Autocar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Autocar)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Insurance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Insurance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosedPersonName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosedPersonName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosedPersonPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosedPersonPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegisterDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegisterDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Potwierdź" class="btn btn-primary btn-lg" /> |
+        @Html.ActionLink("Wróć do listy", "Index")
+    </div>
+    }
+</div>

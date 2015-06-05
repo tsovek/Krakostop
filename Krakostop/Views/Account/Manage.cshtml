@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@using Krakostop.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Zarządzaj hasłem";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="row">
+    <div class="col-md-12">
+        @if (ViewBag.HasLocalPassword)
+        {
+            @Html.Partial("_ChangePasswordPartial")
+        }
+        else
+        {
+            @Html.Partial("_SetPasswordPartial")
+        }
+
+        @using (Html.BeginForm("Index", "Account", FormMethod.Post,
+            new { enctype = "multipart/form-data" }))
+        {
+            <hr />
+            <h5>Zmień swój awatar:</h5>
+            <input type="file" name="files" class="btn btn-primary btn-sm" value="" /><br />
+            <input type="submit" class="btn btn-primary btn-sm" value="Zmień zdjęcie" title="Uplad" />
+            <div style="color:Red;font-size:14px">@ViewBag.Message</div>
+        }
+    </div>
+</div>
